@@ -32,12 +32,15 @@ jobs:
             ~/.gradle/caches/build-cache-*
           key: gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
 
-      - name: Run tests
+      - name: Run macosX64Test
         run: ./gradlew macosX64Test
+
+      - name: Run jvmTest
+        run: ./gradlew jvmTest
 
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: test-reports
-          path: app/build/reports
+          path: build/reports

@@ -44,3 +44,19 @@ jobs:
         with:
           name: test-reports
           path: build/reports
+
+      - name: MacosX64Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: macosX64Test            # Name of the check run which will be created
+          path: build/test-results/macosX64Test/TEST-*.xml    # Path to test results
+          reporter: jest-junit        # Format of test results
+
+      - name: JvmTest Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: jvmTest            # Name of the check run which will be created
+          path: build/test-results/jvmTest/TEST-*.xml    # Path to test results
+          reporter: jest-junit        # Format of test results

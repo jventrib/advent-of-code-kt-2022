@@ -1,48 +1,4 @@
-import kotlin.test.Test
 import kotlin.test.assertEquals
-
-class Tests {
-
-    private val day = day03
-
-    @Test
-    fun todayPart1Example() {
-        doPart1Example(day)
-    }
-
-    @Test
-    fun todayPart1() {
-        doPart1(day)
-    }
-
-    @Test
-    fun todayPart2Example() {
-        doPart2Example(day)
-    }
-
-    @Test
-    fun todayPart2() {
-        doPart2(day)
-    }
-
-    @Test
-    fun oneDayTest() = dayTest(day)
-
-    //
-//    @Suppress("UselessCallOnCollection")
-//    @TestFactory
-//    fun allTests() = days
-//        .filterNotNull()
-//        .flatMap { d -> dayTest(d) }
-//
-//    @Suppress("UselessCallOnCollection")
-//    @TestFactory
-//    fun allTestsWithoutExample() = days
-//        .filterNotNull()
-//        .flatMap { d -> dayTest(d, false) }
-//
-//
-}
 
 fun <E> doPart1Example(d: Day<E>) {
     dayPartTest(d, true, { part1Example }, "Part1Example")

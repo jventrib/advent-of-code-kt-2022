@@ -1,5 +1,6 @@
 package days
 
+import day01
 import day02
 import doPart1
 import doPart1Example
@@ -9,7 +10,7 @@ import kotlin.test.Test
 
 class Day01test {
 
-    private val d = day02
+    private val d = day01
 
     @Test
     fun part1Example() {

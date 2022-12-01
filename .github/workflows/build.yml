@@ -46,7 +46,7 @@ jobs:
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: jvm tests reports
+          name: JVM tests reports
           path: build/test-results/jvmTest/TEST-*.xml
           reporter: java-junit
 
@@ -88,6 +88,6 @@ jobs:
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: macosX64 tests reports
+          name: MacosX64 tests reports
           path: build/test-results/macosX64Test/TEST-*.xml
           reporter: java-junit

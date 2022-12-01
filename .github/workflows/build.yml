@@ -8,8 +8,20 @@ on:
     branches: [ main ]
 
 jobs:
-  JVM:
-    runs-on: macos-latest
+  Test:
+    strategy:
+      matrix:
+        target: [jvmTest, linuxX64Test, macosX64Test, mingwX64Test]
+        include:
+          - target: jvmTest
+            os: ubuntu-latest
+          - target: linuxX64Test
+            os: ubuntu-latest
+          - target: macosX64Test
+            os: macos-latest
+          - target: mingwX64Test
+            os: windows-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -39,8 +51,8 @@ jobs:
             ~/.gradle/caches/build-cache-*
           key: gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
 
-      - name: Run jvmTest
-        run: ./gradlew jvmTest
+      - name: Run ${{ matrix.target }}
+        run: ./gradlew ${{ matrix.target }}
 
       - name: Upload test reports
         if: always()
@@ -49,101 +61,10 @@ jobs:
           name: test-reports
           path: build/reports
 
-      - name: JvmTest Report
+      - name: ${{ matrix.target }} Report
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: JVM tests reports
-          path: build/test-results/jvmTest/TEST-*.xml
-          reporter: java-junit
-
-  MacosX64:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Copy CI gradle.properties
-        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
-
-      - name: Setup java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Konan cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.konan
-          key: ${{ runner.os }}-konan-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
-          restore-keys: ${{ runner.os }}-konan-
-
-      - name: Gradle cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches/modules-*
-            ~/.gradle/caches/jars-*
-            ~/.gradle/caches/build-cache-*
-          key: gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
-
-      - name: Run macosX64Test
-        run: ./gradlew macosX64Test
-
-      - name: Upload test reports
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-reports
-          path: build/reports
-
-      - name: MacosX64Test Report
-        uses: dorny/test-reporter@v1
-        if: success() || failure()
-        with:
-          name: MacosX64 tests reports
-          path: build/test-results/macosX64Test/TEST-*.xml
-          reporter: java-junit
-
-  Windows:
-    runs-on: windows-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Copy CI gradle.properties
-        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
-
-      - name: Setup java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Gradle cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches/modules-*
-            ~/.gradle/caches/jars-*
-            ~/.gradle/caches/build-cache-*
-          key: gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
-
-      - name: Run mingwX64Test
-        run: ./gradlew mingwX64Test
-
-      - name: Upload test reports
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-reports
-          path: build/reports
-
-      - name: WindowsTest Report
-        uses: dorny/test-reporter@v1
-        if: success() || failure()
-        with:
-          name: Windows tests reports
-          path: build/test-results/mingwX64Test/TEST-*.xml
+          name: ${{ matrix.target }} tests reports
+          path: build/test-results/${{ matrix.target }}/TEST-*.xml
           reporter: java-junit

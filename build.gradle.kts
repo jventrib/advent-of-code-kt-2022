@@ -8,6 +8,9 @@ repositories {
 
 kotlin {
     macosX64()
+    mingwX64()
+    linuxX64()
+    mingwX64()
     jvm {
         withJava()
         jvm {
@@ -19,11 +22,22 @@ kotlin {
 
 
     sourceSets {
-        val macosX64Main by getting
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
             }
+        }
+        val desktopMain by creating {
+            dependsOn(commonMain)
+        }
+        val linuxX64Main by getting {
+            dependsOn(desktopMain)
+        }
+        val mingwX64Main by getting {
+            dependsOn(desktopMain)
+        }
+        val macosX64Main by getting {
+            dependsOn(desktopMain)
         }
         val commonTest by getting {
             dependencies {
@@ -31,8 +45,6 @@ kotlin {
             }
         }
     }
-
-
 }
 
 

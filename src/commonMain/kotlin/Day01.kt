@@ -7,8 +7,8 @@ val day01 = day<Int>(1) {
         caloriesList().sortedDescending().take(3).sum()
     }
 }
+
 private fun Day<Int>.caloriesList(): List<Int> =
     input.fold(listOf(0)) { acc, s ->
-        if (s.isNotEmpty()) acc.dropLast(1) + (acc.last() + s.toInt())
-        else acc + 0
+        if (s.isNotEmpty()) acc.dropLast(1) + (acc.last() + s.toInt()) else acc + 0
     }

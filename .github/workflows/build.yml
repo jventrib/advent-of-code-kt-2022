@@ -145,5 +145,5 @@ jobs:
         if: success() || failure()
         with:
           name: Windows tests reports
-          path: build/test-results/minngX64Test/TEST-*.xml
+          path: build/test-results/mingwX64Test/TEST-*.xml
           reporter: java-junit

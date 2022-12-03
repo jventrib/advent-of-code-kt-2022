@@ -1,4 +1,4 @@
-val day01 = day<Int>(1) {
+val day01 = day(1) {
     part1(expectedExampleOutput = 24000, expectedOutput = 67450) {
         caloriesList().max()
     }

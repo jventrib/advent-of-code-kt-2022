@@ -1,4 +1,4 @@
-val day02 = day<Int>(2) {
+val day02 = day(2) {
 
     val matchScores = mapOf(
         ("A X") to 3, // Rock vs Rock -> Draw

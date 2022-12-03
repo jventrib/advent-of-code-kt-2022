@@ -1,4 +1,4 @@
-val day19 = day<Int>(19) {
+val day19 = day(19) {
     part1(expectedExampleOutput = 0, expectedOutput = 0) {
         0
     }

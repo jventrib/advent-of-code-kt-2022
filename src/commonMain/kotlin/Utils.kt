@@ -15,6 +15,7 @@ expect fun readAllText(filePath: String): List<String>
 
 fun List<String>.parseLineToIntList() = first().split(",").map(String::toInt)
 
+fun String.isNumeric() = this.toIntOrNull() != null
 
 fun <E> day(dayNumber: Int, block: Day<E>.() -> Unit): Day<E> {
     val day = Day<E>(dayNumber, block)

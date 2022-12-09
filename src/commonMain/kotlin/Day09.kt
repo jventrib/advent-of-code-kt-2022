@@ -2,47 +2,50 @@ import kotlin.math.absoluteValue
 
 val day09 = day(9) {
     part1(expectedExampleOutput = 13, expectedOutput = 5695) {
-        val h = Point(0, 0)
-        val t = Point(0, 0)
-        val tPath = input.fold(listOf<Point>()) { acc, s ->
-            val split = s.split(' ')
-            val dir = split[0].first()
-            val amount = split[1].toInt()
+        doPart(2)
+    }
 
-            val stepsPath = (0 until amount).fold(listOf<Point>()) { stepAcc, _ ->
-                when (dir) {
-                    'L' -> h.moveX(-1)
-                    'R' -> h.moveX(1)
-                    'U' -> h.moveY(-1)
-                    'D' -> h.moveY(1)
-                    else -> throw Exception("Unknown char")
-                }
-                val dX = h.x - t.x
-                val dY = h.y - t.y
+    part2(expectedExampleOutput = 1, expectedOutput = 2434) {
+        doPart(10)
+    }
+}
+
+private fun Day<Int>.doPart(size: Int): Int {
+    val rope = MutableList(size) { Point(0, 0) }
+    val tPath = input.fold(listOf<Point>()) { acc, s ->
+        val split = s.split(' ')
+        val dir = split[0].first()
+        val amount = split[1].toInt()
+
+        val stepsPath = (0 until amount).fold(listOf<Point>()) { stepAcc, _ ->
+            when (dir) {
+                'L' -> rope.first().moveX(-1)
+                'R' -> rope.first().moveX(1)
+                'U' -> rope.first().moveY(-1)
+                'D' -> rope.first().moveY(1)
+                else -> throw Exception("Unknown char")
+            }
+
+            val knotPairs = rope.zipWithNext { prev, curr ->
+                val dX = prev.x - curr.x
+                val dY = prev.y - curr.y
                 when {
                     dX.absoluteValue + dY.absoluteValue > 2 -> {
-                        t.moveX(dX.max1())
-                        t.moveY(dY.max1())
+                        curr.moveX(dX.max1())
+                        curr.moveY(dY.max1())
                     }
-                    dX.absoluteValue > 1 -> {
-                        t.moveX(dX.max1())
-                    }
-                    dY.absoluteValue > 1 -> {
-                        t.moveY(dY.max1())
-                    }
-                }
-                stepAcc + t.copy()
-            }
-            val tPositions = (acc + stepsPath).distinct()
-            tPositions
-        }
-            printPoints(tPath)
-        tPath.size
-    }
 
-    part2(expectedExampleOutput = 0, expectedOutput = 0) {
-        0
+                    dX.absoluteValue > 1 -> curr.moveX(dX.max1())
+                    dY.absoluteValue > 1 -> curr.moveY(dY.max1())
+                }
+                stepAcc + curr.copy()
+            }
+            knotPairs.last()
+        }
+        (acc + stepsPath).distinct()
     }
+//    printPoints(tPath)
+    return tPath.size
 }
 
 fun printPoints(points: List<Point>) {

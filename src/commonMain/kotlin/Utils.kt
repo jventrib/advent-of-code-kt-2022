@@ -53,7 +53,24 @@ class Part<E>(
     }
 }
 
-data class Point(val x: Int, val y: Int, val value: Int = 0)
+data class Point(var x: Int, var y: Int, var value: Int = 0) {
+
+    fun left(amount: Int) {
+        x -= amount
+    }
+
+    fun right(amount: Int) {
+        x += amount
+    }
+
+    fun up(amount: Int) {
+        y -= amount
+    }
+
+    fun down(amount: Int) {
+        y += amount
+    }
+}
 
 
 fun <T, R> Flow<T>.concurrentMap(

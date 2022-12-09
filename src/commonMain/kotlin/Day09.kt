@@ -1,42 +1,62 @@
-val day09 = day(9) {
-    part1(expectedExampleOutput = 13, expectedOutput = 0) {
+import kotlin.math.absoluteValue
 
-        var h = Point(0, 0)
-        var oldH = Point(0, 0)
+val day09 = day(9) {
+    part1(expectedExampleOutput = 13, expectedOutput = 5695) {
+        val h = Point(0, 0)
         val t = Point(0, 0)
-        input.forEach { s ->
+        val tPath = input.fold(listOf<Point>()) { acc, s ->
             val split = s.split(' ')
             val dir = split[0].first()
             val amount = split[1].toInt()
 
-            for (it in 0 until amount) {
-
+            val stepsPath = (0 until amount).fold(listOf<Point>()) { stepAcc, _ ->
                 when (dir) {
-                    'L' -> h.left(1)
-                    'R' -> h.right(1)
-                    'U' -> h.up(1)
-                    'D' -> h.down(1)
+                    'L' -> h.moveX(-1)
+                    'R' -> h.moveX(1)
+                    'U' -> h.moveY(-1)
+                    'D' -> h.moveY(1)
                     else -> throw Exception("Unknown char")
                 }
-//                if ((h.x - t.x) + (h.y -t.y) > 2) {
-
+                val dX = h.x - t.x
+                val dY = h.y - t.y
                 when {
-                    h.x - t.x > 1 -> t.right(1)
-                    h.x - t.x < -1 -> t.left(1)
-                    h.y - t.y < -1 -> t.up(1)
-                    h.y - t.y > 1 -> t.down(1)
+                    dX.absoluteValue + dY.absoluteValue > 2 -> {
+                        t.moveX(dX.max1())
+                        t.moveY(dY.max1())
+                    }
+                    dX.absoluteValue > 1 -> {
+                        t.moveX(dX.max1())
+                    }
+                    dY.absoluteValue > 1 -> {
+                        t.moveY(dY.max1())
+                    }
                 }
-
-                println(t)
-
+                stepAcc + t.copy()
             }
-
+            val tPositions = (acc + stepsPath).distinct()
+            tPositions
         }
-
-        0
+            printPoints(tPath)
+        tPath.size
     }
 
     part2(expectedExampleOutput = 0, expectedOutput = 0) {
         0
     }
 }
+
+fun printPoints(points: List<Point>) {
+    val width = points.minOf { it.x }..points.maxOf { it.x }
+    val height = points.minOf { it.y }..points.maxOf { it.y }
+
+    height.forEach { y ->
+        width.forEach { x ->
+            if (points.any { it.x == x && it.y == y }) print("#") else print(".")
+        }
+        println()
+    }
+    println()
+    println()
+}
+
+private fun Int.max1() = coerceIn(-1..1)

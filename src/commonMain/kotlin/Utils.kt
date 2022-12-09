@@ -55,19 +55,11 @@ class Part<E>(
 
 data class Point(var x: Int, var y: Int, var value: Int = 0) {
 
-    fun left(amount: Int) {
-        x -= amount
-    }
-
-    fun right(amount: Int) {
+    fun moveX(amount: Int) {
         x += amount
     }
 
-    fun up(amount: Int) {
-        y -= amount
-    }
-
-    fun down(amount: Int) {
+    fun moveY (amount: Int) {
         y += amount
     }
 }

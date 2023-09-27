@@ -62,6 +62,19 @@ data class Point(var x: Int, var y: Int, var value: Int = 0) {
     fun moveY (amount: Int) {
         y += amount
     }
+
+    fun neighborsIn(points: List<List<Point>>) = listOfNotNull(
+        points[y].getOrNull(x - 1),
+        points[y].getOrNull(x + 1),
+        points.getOrNull(y - 1)?.get(x),
+        points.getOrNull(y + 1)?.get(x),
+    )
+
+    override fun toString(): String {
+        return "MPoint(x=$x, y=$y, value=$value)"
+    }
+
+
 }
 
 

@@ -22,7 +22,7 @@
 
 import kotlin.Comparator
 
-actual class PriorityQueue<E> actual constructor(size: Int) : Collection<E> {
+actual class PriorityQueue<E> actual constructor(comparator: Comparator<in E>) : Collection<E> {
     private var _size: Int = 0
         private set
     actual override val size: Int

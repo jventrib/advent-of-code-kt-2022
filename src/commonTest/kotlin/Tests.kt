@@ -20,7 +20,7 @@ private fun <E> dayPartTest(d: Day<E>, example: Boolean, part: Day<E>.() -> Part
     println("Day ${d.dayNumber} - $label")
 
     d.input = readInput(d.dayNumber, if (example) "input_example.txt" else "input.txt")
-    println("input: ${d.input}")
+    println("input: ${lineSeparator()}${d.input.joinToString(lineSeparator())}")
     val start = getMillis()
     d.block(d)
     val output = d.part().output

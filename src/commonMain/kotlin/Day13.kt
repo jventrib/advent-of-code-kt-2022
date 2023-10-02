@@ -14,7 +14,7 @@ val day13 = day(13) {
     part2(expectedExampleOutput = 140, expectedOutput = 23142) {
 
         val list = input.filter { it.isNotEmpty() } + "[[2]]" + "[[6]]"
-        val sortedPacket = list.map(Json.Default::parseToJsonElement).sortedWith(PacketComparator())
+        val sortedPacket = list.map(Json.Default::parseToJsonElement).sortedWith(JsonElement::compareTo)
         val index2 = sortedPacket.indexOfFirst { Json.encodeToString(it) == "[[2]]" } + 1
         val index6 = sortedPacket.indexOfFirst { Json.encodeToString(it) == "[[6]]" } + 1
         index2 * index6
@@ -25,10 +25,6 @@ private fun testOrder(pair: Pair<String, String>): Boolean {
     val left = Json.parseToJsonElement(pair.first)
     val right = Json.parseToJsonElement(pair.second)
     return left.compareTo(right) < 0
-}
-
-private class PacketComparator : Comparator<JsonElement> {
-    override fun compare(a: JsonElement, b: JsonElement) = a.compareTo(b)
 }
 
 private fun JsonElement.compareTo(other: JsonElement): Int = when {

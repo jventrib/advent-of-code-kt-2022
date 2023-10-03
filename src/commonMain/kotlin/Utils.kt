@@ -17,6 +17,26 @@ fun List<String>.parseLineToIntList() = first().split(",").map(String::toInt)
 
 fun String.isNumeric() = this.toIntOrNull() != null
 
+fun <E> executeDayPart(
+    d: Day<E>,
+    part: Day<E>.() -> Part<E>,
+    example: Boolean,
+    label: String
+): E {
+    println("Day ${d.dayNumber} - $label")
+
+    d.input = readInput(d.dayNumber, if (example) "input_example.txt" else "input.txt")
+    println("input: ${lineSeparator()}${d.input.joinToString(lineSeparator())}")
+    val start = getMillis()
+    d.block(d)
+    val output = d.part().output
+    val elapsed = getMillis() - start
+    println("output: $output")
+    println("time: ${elapsed}ms")
+    return output
+}
+
+
 fun <E> day(dayNumber: Int, block: Day<E>.() -> Unit): Day<E> {
     val day = Day<E>(dayNumber, block)
     return day

@@ -89,6 +89,7 @@ data class Point(var x: Int, var y: Int, var value: Int = 0) {
         points.getOrNull(y - 1)?.get(x),
         points.getOrNull(y + 1)?.get(x),
     )
+
 }
 
 
